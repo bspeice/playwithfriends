@@ -10,7 +10,7 @@ class TestIntersections(TestCase):
         steam_id_right = '76561198069992619'
 
         inter_games = intersections.intersecting_games(
-            steamid_left=steam_id_left, steamid_right=steam_id_right
+            steam_id_left, steam_id_right
         )
 
         self.assertIn('Project CARS', inter_games.values())

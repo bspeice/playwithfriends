@@ -1,12 +1,11 @@
 from playwithfriends import steam
+from functools import reduce
 
 
-def intersecting_games(steamid_left, steamid_right):
+def intersecting_games(*args):
     api = steam.SteamAPI()
 
-    games_left = api.get_games(steamid_left)
-    games_right = api.get_games(steamid_right)
+    games_list = [api.get_games(steamid) for steamid in args]
+    ids_mutual = reduce(lambda l, r: set(l.keys()).intersection(r.keys()), games_list)
 
-    ids_mutual = set(games_left.keys()).intersection(games_right.keys())
-
-    return {game_id: games_left[game_id] for game_id in ids_mutual}
+    return {game_id: games_list[0][game_id] for game_id in ids_mutual}
