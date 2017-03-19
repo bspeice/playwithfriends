@@ -7,7 +7,7 @@ class SteamTest(TestCase):
 
     def test_returns_friends_list(self):
         steam_id = '76561198020882912'
-        friends = steam.SteamAPI().get_friends(steam_id)
+        friends = steam.SteamAPI().get_friends_ids(steam_id)
         self.assertTrue(len(friends) > 0)
 
     def test_I_own_games(self):
@@ -24,4 +24,9 @@ class SteamTest(TestCase):
         profile_url = 'http://steamcommunity.com/id/fractalize/'
         steam_id = '76561198020882912'
 
-        self.assertEqual(steam.SteamAPI().get_steam64_id(profile_url), steam_id)
+        self.assertEqual(steam.SteamAPI().get_steam64_from_profile(profile_url), steam_id)
+
+    def test_my_persona(self):
+        steam_id = '76561198020882912'
+        names = steam.SteamAPI().get_player_names([steam_id])
+        self.assertEqual({steam_id: 'Fractalize'}, names)

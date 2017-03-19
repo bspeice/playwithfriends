@@ -36,7 +36,7 @@ class SteamAPI(object):
         logging.debug('Return code: {}'.format(response.status_code))
         return response.json()
 
-    def get_friends(self, steam_id):
+    def get_friends_ids(self, steam_id):
         """
         Return the steam_id's of all users this user is friends with
 
@@ -97,18 +97,28 @@ class SteamAPI(object):
 
         return [g['appid'] for g in games]
 
-    def get_player_summary(self, steam_id):
+    def get_player_summary(self, steam_ids):
 
         return self._make_request(
             WebAPI.user,
             'GetPlayerSummaries',
             'v0002',
             {
-                'steamids': steam_id
+                'steamids': ','.join(steam_ids)
             }
-        )
+        )['response']['players']
 
-    def get_steam64_id(self, profile_url):
+    def get_player_names(self, steam_ids):
+        """
+
+        :param steam_ids:
+        :return: Persona names for all id's supplied
+        :rtype: list
+        """
+        players = self.get_player_summary(steam_ids)
+        return {p['steamid']: p['personaname'] for p in players}
+
+    def get_steam64_from_profile(self, profile_url):
         """
         Get the Steam64 ID for a user, given their profile URL.
         This is by far and above the mostly likely piece of code
