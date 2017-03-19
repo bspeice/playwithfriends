@@ -10,9 +10,15 @@ setup(
     packages=find_packages(),
     install_requires=[
         'requests >= 2.10.0',
-        'bottle >= 0.12.7'
+        'bottle >= 0.12.7',
+        'BeautifulSoup4 >= 3.2.1'
     ],
     author='Bradlee Speice',
     author_email='bradlee.speice@gmail.com',
-    description='Figure out what games you and your friends should play'
+    description='Figure out what games you and your friends should play',
+    entry_points={
+        'console_scripts': [
+            'playwithfriends = playwithfriends.server:main'
+        ]
+    }
 )

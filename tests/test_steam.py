@@ -19,3 +19,9 @@ class SteamTest(TestCase):
         steam_id = '76561198020882912'
         games = steam.SteamAPI().get_recent_games(steam_id)
         self.assertTrue(len(games) > 0)
+
+    def test_my_profile_id(self):
+        profile_url = 'http://steamcommunity.com/id/fractalize/'
+        steam_id = '76561198020882912'
+
+        self.assertEqual(steam.SteamAPI().get_steam64_id(profile_url), steam_id)

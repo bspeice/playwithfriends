@@ -3,6 +3,7 @@ from enum import Enum
 from os import path
 from copy import deepcopy
 import logging
+from bs4 import BeautifulSoup
 
 
 _base_url = 'http://api.steampowered.com'
@@ -106,3 +107,21 @@ class SteamAPI(object):
                 'steamids': steam_id
             }
         )
+
+    def get_steam64_id(self, profile_url):
+        """
+        Get the Steam64 ID for a user, given their profile URL.
+        This is by far and above the mostly likely piece of code
+        to break, be careful in the future.
+
+        :param profile_url: Steam community profile URL
+        :type profile_url: str
+        :return: Steam64 ID
+        :rtype: str
+        """
+        profile_html = requests.get(profile_url)
+
+        soup = BeautifulSoup(profile_html.content, 'lxml')
+        comment_paging = soup.find('div', {'class': 'commentthread_paging'})
+        steamid = comment_paging.attrs['id'].split('_')[2]
+        return steamid
