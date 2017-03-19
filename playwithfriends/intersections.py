@@ -6,6 +6,7 @@ def intersecting_games(*args):
     api = steam.SteamAPI()
 
     games_list = [api.get_games(steamid) for steamid in args]
-    ids_mutual = reduce(lambda l, r: set(l.keys()).intersection(r.keys()), games_list)
+    game_ids = [g.keys() for g in games_list]
+    ids_mutual = reduce(lambda l, r: set(l).intersection(r), game_ids)
 
     return {game_id: games_list[0][game_id] for game_id in ids_mutual}
